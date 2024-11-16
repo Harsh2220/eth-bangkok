@@ -5,6 +5,7 @@ import getPublicClient from "@/utils/getPublicClient";
 import getTokenContract from "@/utils/getTokenContract";
 import getTokenImage from "@/utils/getTokenImage";
 import { formatUnits, Chain, PublicClient } from "viem";
+import { useAccount, useWriteContract } from "wagmi";
 
 export interface Token {
   address: string;
@@ -25,6 +26,9 @@ export interface PoolData {
 }
 
 export default function usePools() {
+  const { writeContractAsync } = useWriteContract();
+  const { address } = useAccount();
+
   const fetchPoolData = async (
     publicClient: PublicClient,
     tokenAddress: string
@@ -102,5 +106,16 @@ export default function usePools() {
     return pools;
   }
 
-  return { getPools };
+  async function supply(token: string, amount: bigint) {
+    if (!address) return;
+    const hash = await writeContractAsync({
+      abi: ABI,
+      address: AAVE_CONTRACT,
+      functionName: "supply",
+      args: [token as `0x${string}`, amount, address!, 0],
+    });
+    return hash;
+  }
+
+  return { getPools, supply };
 }

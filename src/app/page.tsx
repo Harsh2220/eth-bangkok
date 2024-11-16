@@ -4,14 +4,6 @@ import TableComponent from "@/components/token-table";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { LineChartComponent } from "@/components/ui/line-chart";
 import { PieChartComponent } from "@/components/ui/pie-chart";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@radix-ui/react-dropdown-menu";
 import { useAppKitAccount } from "@reown/appkit-core/react";
 import { useQuery } from "@tanstack/react-query";
 
@@ -101,19 +93,6 @@ const Home = () => {
               $ {Number(pnlData?.data.abs_profit_usd).toFixed(2)}
             </div>
           </div>
-        </div>
-        <div>
-          <DropdownMenu>
-            <DropdownMenuTrigger>Open</DropdownMenuTrigger>
-            <DropdownMenuContent>
-              <DropdownMenuLabel>My Account</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem>Profile</DropdownMenuItem>
-              <DropdownMenuItem>Billing</DropdownMenuItem>
-              <DropdownMenuItem>Team</DropdownMenuItem>
-              <DropdownMenuItem>Subscription</DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
         </div>
       </div>
       <div className="flex gap-4">

@@ -30,7 +30,13 @@ export const config = createConfig({
   },
 });
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+    },
+  },
+});
 
 // 4. Create the AppKit instance
 createAppKit({

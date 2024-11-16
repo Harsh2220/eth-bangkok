@@ -19,15 +19,19 @@ export default function useBridge() {
     const route = result.routes.at(0);
 
     if (!route) {
+      console.log("route not found");
       throw Error("...");
     }
 
     const routeSteps = route.steps.map((step) => {
+      console.log(step);
       if (!step.transactionRequest) {
+        console.log("in step txreq");
         throw Error("...");
       }
       const { to, gasLimit, data, value } = step.transactionRequest;
       if (!to || !gasLimit || !data || !value) {
+        console.log("!gas");
         throw Error("...");
       }
       return rawTx({

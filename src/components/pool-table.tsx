@@ -20,8 +20,129 @@ import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
 import { Button } from "./ui/button";
 import { Label } from "./ui/label";
 import { Input } from "./ui/input";
+import {
+  MultichainClient,
+  MultichainTokenMapping,
+  buildItx,
+  buildMultichainReadonlyClient,
+  buildRpcInfo,
+  buildTokenMapping,
+  deployment,
+  encodeBridgingOps,
+  rawTx,
+  singleTx,
+} from "klaster-sdk";
+import { Chain, arbitrum, base, optimism, polygon } from "viem/chains";
+import useKlaster from "@/hooks/useKlaster";
+import { createWalletClient, encodeFunctionData, http, parseUnits } from "viem";
+import useBridge from "@/hooks/useBridge";
+import getTokenContract from "@/utils/getTokenContract";
+import { TOKENS } from "@/types";
+import { AAVE_CONTRACT } from "@/constants/contracts";
+import { ABI } from "@/constants/abi";
+import { useState } from "react";
+import { useAccount } from "wagmi";
 
 const PoolTableComponent = ({ data }: { data: Pool[] }) => {
+  const { klaster } = useKlaster();
+  const { liFiBrigePlugin } = useBridge();
+  const { address } = useAccount();
+  const [amount, setAmount] = useState("");
+
+  async function handleLend(chain: Chain) {
+    try {
+      if (!klaster || !address) return;
+
+      const mcClient = buildMultichainReadonlyClient(
+        [optimism, base, polygon, arbitrum].map((x) => {
+          return {
+            chainId: x.id,
+            rpcUrl: x.rpcUrls.default.http[0],
+          };
+        })
+      );
+
+      const mcUSDC = buildTokenMapping([
+        deployment(optimism.id, getTokenContract(optimism, TOKENS.USDC)!),
+        deployment(base.id, getTokenContract(base, TOKENS.USDC)!),
+        deployment(arbitrum.id, getTokenContract(arbitrum, TOKENS.USDC)!),
+        deployment(polygon.id, getTokenContract(polygon, TOKENS.USDC)!),
+      ]);
+
+      const intersectTokenAndClients = (
+        token: MultichainTokenMapping,
+        mcClient: MultichainClient
+      ) => {
+        return token.filter((deployment) =>
+          mcClient.chainsRpcInfo
+            .map((info) => info.chainId)
+            .includes(deployment.chainId)
+        );
+      };
+
+      const mUSDC = intersectTokenAndClients(mcUSDC, mcClient);
+
+      const uBalance = await mcClient.getUnifiedErc20Balance({
+        tokenMapping: mUSDC,
+        account: klaster.account,
+      });
+
+      console.log(
+        uBalance,
+        uBalance.balance - parseUnits("1", uBalance.decimals)
+      );
+
+      const bridgingOps = await encodeBridgingOps({
+        tokenMapping: mUSDC,
+        account: klaster?.account,
+        amount: uBalance.balance - parseUnits("1", uBalance.decimals),
+        bridgePlugin: liFiBrigePlugin,
+        client: mcClient,
+        destinationChainId: chain.id,
+        unifiedBalance: uBalance,
+      });
+
+      console.log(bridgingOps, "opasd");
+
+      const supplyTx = rawTx({
+        gasLimit: BigInt(100000),
+        to: AAVE_CONTRACT,
+        data: encodeFunctionData({
+          abi: ABI,
+          functionName: "supply",
+          args: [
+            getTokenContract(chain, TOKENS.USDC),
+            BigInt(amount),
+            address,
+            0,
+          ],
+        }),
+      });
+
+      const iTx = buildItx({
+        steps: bridgingOps.steps.concat(singleTx(chain.id, supplyTx)),
+        feeTx: klaster.encodePaymentFee(chain.id, "USDC"),
+      });
+
+      const quote = await klaster.getQuote(iTx);
+
+      const signer = createWalletClient({
+        transport: http(),
+      });
+
+      const signed = await signer.signMessage({
+        message: {
+          raw: quote.itxHash,
+        },
+        account: address,
+      });
+
+      const result = await klaster.execute(quote, signed);
+    } catch (error) {
+      console.log("ererer", error);
+    }
+  }
+
   return (
     <Table>
       <TableHeader>
@@ -84,9 +205,41 @@ const PoolTableComponent = ({ data }: { data: Pool[] }) => {
                   </DialogFooter>
                 </DialogContent>
               </Dialog>
-              <Button size={"sm"} variant={"outline"}>
-                Borrow
-              </Button>
+              <Dialog>
+                <DialogTrigger asChild>
+                  <Button
+                    size={"sm"}
+                    variant={"outline"}
+                    onClick={() => handleLend(data.chain)}
+                  >
+                    Borrow
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="sm:max-w-[425px]">
+                  <DialogHeader>
+                    <DialogTitle>Borrow</DialogTitle>
+                    <DialogDescription>
+                      Borrow token from various chain and pay lowest debt
+                    </DialogDescription>
+                  </DialogHeader>
+                  <div className="grid gap-4 py-4">
+                    <div className="grid grid-cols-4 items-center gap-4">
+                      <Label htmlFor="name" className="text-right">
+                        Amount
+                      </Label>
+                      <Input
+                        id="name"
+                        defaultValue="Pedro Duarte"
+                        className="col-span-3"
+                        type="number"
+                      />
+                    </div>
+                  </div>
+                  <DialogFooter>
+                    <Button type="submit">Save changes</Button>
+                  </DialogFooter>
+                </DialogContent>
+              </Dialog>
             </TableCell>
           </TableRow>
         ))}
