@@ -6,9 +6,20 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { Pool } from "@/hooks/usePools";
 import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
 import { Button } from "./ui/button";
+import { Label } from "./ui/label";
+import { Input } from "./ui/input";
 
 const PoolTableComponent = ({ data }: { data: Pool[] }) => {
   return (
@@ -44,8 +55,38 @@ const PoolTableComponent = ({ data }: { data: Pool[] }) => {
               {data.borrowYield.toFixed(2)}%
             </TableCell>
             <TableCell className="text-right flex gap-2 justify-end">
-              <Button size={"sm"}>Lend</Button>
-              <Button size={"sm"}>Borrow</Button>
+              <Dialog>
+                <DialogTrigger asChild>
+                  <Button size={"sm"}>Lend</Button>
+                </DialogTrigger>
+                <DialogContent className="sm:max-w-[425px]">
+                  <DialogHeader>
+                    <DialogTitle>Lend</DialogTitle>
+                    <DialogDescription>
+                      Lend token from various chain and earn highest yield
+                    </DialogDescription>
+                  </DialogHeader>
+                  <div className="grid gap-4 py-4">
+                    <div className="grid grid-cols-4 items-center gap-4">
+                      <Label htmlFor="name" className="text-right">
+                        Amount
+                      </Label>
+                      <Input
+                        id="name"
+                        defaultValue="Pedro Duarte"
+                        className="col-span-3"
+                        type="number"
+                      />
+                    </div>
+                  </div>
+                  <DialogFooter>
+                    <Button type="submit">Save changes</Button>
+                  </DialogFooter>
+                </DialogContent>
+              </Dialog>
+              <Button size={"sm"} variant={"outline"}>
+                Borrow
+              </Button>
             </TableCell>
           </TableRow>
         ))}
