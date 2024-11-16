@@ -4,6 +4,12 @@ const page = async () => {
       const response = await fetch("http://localhost:3000/api/allnetworks");
       const result = await response.json();
 
+      const responsePercentage = await fetch(
+        "http://localhost:3000/api/allnetworkspercentage"
+      );
+      const resultPercentage = await responsePercentage.json();
+      console.log("resultPercentage", resultPercentage);
+
       // Access the data from your response structure
       const data = result.data.result[0].value_usd;
 
