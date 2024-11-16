@@ -13,86 +13,59 @@ import {
   DropdownMenuTrigger,
 } from "@radix-ui/react-dropdown-menu";
 import { useAppKitAccount } from "@reown/appkit-core/react";
-import { useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+
 // import { useState } from "react";
-import { TrendingUp } from "lucide-react";
+import { TrendingDown, TrendingUp } from "lucide-react";
 
-const page = () => {
-  const {address} = useAppKitAccount();
-  const [value, setValue] = useState(0);
-  const [percent, setPercent] = useState(0);
-  const [pnl, setPnl] = useState(0);
+const Home = () => {
+  const { address } = useAppKitAccount();
 
-  // const [isLoading, setIsLoading] = useState(true);
-  // const [error, setError] = useState(null);
-  // useEffect(() => {
-  //   fetchData(address);
-  // }
-  // , []);
-
-  const fetchAmount = async () => {
-    try {
-      const BASE_URL = process.env.BASE_URL;
+  // Replace individual fetch functions with React Query hooks
+  const {
+    data: amountData,
+    isPending,
+    isError,
+  } = useQuery({
+    queryKey: ["amount", address],
+    queryFn: async () => {
       const response = await fetch(`/api/allnetworks?addresses=${address}`);
       const data = await response.json();
-  
-      // console.log("result", data);
-      
-      // const responsePercentage = await fetch(
-      //   "http://localhost:3000/api/allnetworkspercentage"
-      // );
-      // const resultPercentage = await responsePercentage.json();
-      // console.log("resultPercentage", resultPercentage);
-  
-      // // Access the data from your response structure
-      // const data = result.data.result[0].value_usd;
-  
-      // Now you can use the data
-      // console.log(data.data, "asdsad");
-      setValue(data.data.result[0].value_usd.toFixed(5));
-      fetchPNL();
-    } catch (error) {
-      console.log("Error fetching data:", error);
-      return null;
-    }
-  };
+      return data.data.result[0].value_usd.toFixed(5);
+    },
+    enabled: !!address,
+  });
 
-  const fetchPNL = async () => {
-    try {
-      const responsePnl = await fetch(
-        `/api/generalpnl?addresses=${address}`
-      );
-      console.log("===> ", responsePnl);
-      
-      const resultPercentage = await responsePnl.json();
-      
+  console.log("ttt", amountData);
 
-      console.log("resultPercentage", resultPercentage);
-    } catch (error) {
-      console.log("Error fetching data:", error);
-      return null;
-    }
-  }
-
-  useEffect(() => {
-    if (address) {
-      fetchAmount();
-
-      
-    }
-  }, [address]);
-
+  const {
+    data: pnlData,
+    isPending: pnlPending,
+    isError: pnlError,
+  } = useQuery({
+    queryKey: ["pnl", address],
+    queryFn: async () => {
+      const response = await fetch(`/api/generalpnl?addresses=${address}`);
+      return response.json();
+    },
+    enabled: !!address,
+  });
+  console.log("xxx", pnlData);
   return (
     <div className="min-h-screen px-6 flex flex-col gap-12">
       <div className="flex justify-between">
         <div>
           <h1 className="text-lg font-normal text-gray-600">Total Balance</h1>
           <div className="flex items-center gap-2">
-            <div className="text-3xl font-bold">${value}</div>
+            <div className="text-3xl font-bold">${amountData}</div>
             <div className="text-lg text-green-500 font-semibold border border-green-500 border-opacity-40 border-5 rounded-full px-4 flex items-center gap-2">
-              <TrendingUp /> 10%
+              <TrendingUp /> {pnlData?.data.roi}%
+              {/* change color of down icon */}
+              {/* <TrendingDown /> */}
             </div>
-            <div className="text-lg text-green-500 font-semibold">+ $21</div>
+            <div className="text-lg text-green-500 font-semibold">
+              + ${pnlData?.data.roi}
+            </div>
           </div>
         </div>
         <div>
@@ -133,4 +106,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Home;
