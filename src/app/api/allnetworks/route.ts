@@ -1,12 +1,12 @@
-import { NextResponse } from "next/server";
+import { NextResponse, NextRequest } from "next/server";
 
-export async function GET() {
-  //   const { searchParams } = new URL(req.url);
-  //   const addresses = searchParams.get("addresses");
+export async function GET(req: NextRequest) {
+    const { searchParams } = new URL(req.url);
+    const addresses = searchParams.get("addresses");
   console.log("first");
   try {
     const url = new URL(
-      "https://api.1inch.dev/portfolio/portfolio/v4/general/current_value?addresses=0x16047f2cca5949b8339cb256eae042b41a3a3760&use_cache=true"
+      `https://api.1inch.dev/portfolio/portfolio/v4/general/current_value?addresses=${addresses}&use_cache=true`
     );
 
     const response = await fetch(url, {
