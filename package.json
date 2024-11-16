@@ -9,8 +9,15 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@radix-ui/react-dialog": "^1.1.2",
+    "@radix-ui/react-scroll-area": "^1.2.1",
+    "@radix-ui/react-separator": "^1.1.0",
+    "@radix-ui/react-slot": "^1.1.0",
+    "@radix-ui/react-tooltip": "^1.1.4",
     "@reown/appkit": "^1.4.1",
     "@reown/appkit-adapter-ethers": "^1.4.1",
+    "@reown/appkit-common": "^1.4.1",
+    "@reown/appkit-core": "^1.4.1",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "ethers": "^6.13.4",

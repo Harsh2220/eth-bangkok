@@ -1,7 +1,7 @@
 "use client";
 
 import { createAppKit } from "@reown/appkit/react";
-import { EthersAdapter as EthersAdapterImport } from "@reown/appkit-adapter-ethers";
+import { EthersAdapter } from "@reown/appkit-adapter-ethers";
 import {
   mainnet,
   polygon,
@@ -16,7 +16,7 @@ import {
 const projectId = "be1c543939dbd66ef6e523248a000e7c";
 
 // 2. Set Ethers adapters
-const EthersAdapter = new EthersAdapterImport();
+const ethersAdapter = new EthersAdapter();
 
 // 3. Create a metadata object
 const metadata = {
@@ -28,10 +28,11 @@ const metadata = {
 
 // 4. Create the AppKit instance
 createAppKit({
-  adapters: [EthersAdapter],
+  adapters: [ethersAdapter],
   metadata: metadata,
   networks: [mainnet, polygon, arbitrum, gnosis, optimism, base, bsc],
   projectId,
+  defaultNetwork: mainnet,
   features: {
     analytics: true, // Optional - defaults to your Cloud configuration
     email: false,
@@ -40,27 +41,5 @@ createAppKit({
 });
 
 export function AppKit({ children }: { children: React.ReactNode }) {
-  return (
-    <div
-      className="flex flex-col h-screen bg-[#F8F8F8] w-screen"
-      style={{ height: "100vh" }}
-    >
-      <header
-        className="flex justify-between items-center p-6 bg-white w-[100%]"
-        style={{
-          width: "100vw",
-          display: "flex",
-          justifyContent: "space-between",
-        }}
-      >
-        <div className="text-3xl font-bold text-[#333333]">
-          Portfolio tracker
-        </div>
-        <div className="flex items-center gap-2">
-          <w3m-button />
-        </div>
-      </header>
-      <main className="flex-1 w-full h-full">{children}</main>
-    </div>
-  );
+  return <div className="min-h-screen bg-background">{children}</div>;
 }
