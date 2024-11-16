@@ -7,7 +7,7 @@ import { MainSidebar } from "@/components/sidebar";
 
 export function Navbar() {
   return (
-    <nav className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+    <nav className="sticky top-0 z-50 w-full px-6 py-4 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-14 items-center">
         <div className="md:hidden mr-2">
           <Sheet>
@@ -29,7 +29,7 @@ export function Navbar() {
         </div>
 
         <div className="flex-1" />
-        <w3m-button />
+        <w3m-button balance="hide" />
       </div>
     </nav>
   );

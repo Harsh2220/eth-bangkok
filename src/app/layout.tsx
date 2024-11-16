@@ -1,20 +1,14 @@
 import type { Metadata } from "next";
-import localFont from "next/font/local";
+import { Raleway } from "next/font/google";
 import "./globals.css";
 import { AppKit } from "../../context/web3modal";
 import { MainSidebar } from "@/components/sidebar";
 import { Navbar } from "@/components/navbar";
 import { SidebarProvider } from "@/components/ui/sidebar";
 
-const geistSans = localFont({
-  src: "./fonts/GeistVF.woff",
-  variable: "--font-geist-sans",
-  weight: "100 900",
-});
-const geistMono = localFont({
-  src: "./fonts/GeistMonoVF.woff",
-  variable: "--font-geist-mono",
-  weight: "100 900",
+const notoSans = Raleway({
+  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
+  subsets: ["latin"],
 });
 
 export const metadata: Metadata = {
@@ -28,10 +22,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+    <html lang="en" className="dark">
+      <body className={`${notoSans.className}  antialiased`}>
         <AppKit>
           <div className="flex min-h-screen">
             <div className="">
