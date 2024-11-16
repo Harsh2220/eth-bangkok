@@ -16,8 +16,8 @@ interface NullChainData {
 }
 
 export async function GET(req: NextRequest) {
-    const { searchParams } = new URL(req.url);
-    const addresses = searchParams.get("addresses");
+  const { searchParams } = new URL(req.url);
+  const addresses = searchParams.get("addresses");
   try {
     const url = new URL(
       `https://api.1inch.dev/portfolio/portfolio/v4/overview/erc20/current_value?addresses=${addresses}&use_cache=true`
@@ -49,15 +49,15 @@ export async function GET(req: NextRequest) {
     );
 
     // Calculate percentages
-    const protocolPercentages = nullChainData.map((item:any) => ({
+    const protocolPercentages = nullChainData.map((item) => ({
       protocol_name: item.protocol_name,
       value_usd: item.value,
       percentage: ((item.value / totalValue) * 100).toFixed(2),
     }));
 
-    console.log(protocolPercentages);
+    console.log("iii", protocolPercentages);
 
-    return NextResponse.json({ data: data, status: 200 });
+    return NextResponse.json({ data: protocolPercentages, status: 200 });
   } catch (error) {
     return NextResponse.json({ data: error, status: 500 });
   }

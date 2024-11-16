@@ -50,7 +50,27 @@ const Home = () => {
     },
     enabled: !!address,
   });
+
   console.log("xxx", pnlData);
+
+  const {
+    data: allnetworkspercentage,
+    isPending: allnetworkspercentagePending,
+    isError: allnetworkspercentageError,
+  } = useQuery({
+    queryKey: ["percentage-split", address],
+    queryFn: async () => {
+      const response = await fetch(
+        `/api/allnetworkspercentage?addresses=${address}`
+      );
+      const data = await response.json();
+      return data;
+    },
+    enabled: !!address,
+  });
+
+  console.log("allnetworkspercentage", allnetworkspercentage);
+
   return (
     <div className="min-h-screen px-6 flex flex-col gap-12">
       <div className="flex justify-between">
