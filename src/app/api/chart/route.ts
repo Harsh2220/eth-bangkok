@@ -5,7 +5,7 @@ export async function GET() {
   //   const addresses = searchParams.get("addresses");
   try {
     const url = new URL(
-      "https://api.1inch.dev/portfolio/portfolio/v4/general/value_chart?addresses=0x111423FA917A010A4f62c9B2742708744B4CbFc4&timerange=1day"
+      "https://api.1inch.dev/portfolio/portfolio/v4/general/value_chart?addresses=0x111423FA917A010A4f62c9B2742708744B4CbFc4&timerange=1week"
     );
 
     const response = await fetch(url, {

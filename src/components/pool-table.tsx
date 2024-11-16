@@ -9,8 +9,9 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
+import { PoolData } from "@/app/pools/page";
 
-const PoolTableComponent = ({ data }) => {
+const PoolTableComponent = ({ data }: { data: PoolData[] }) => {
   return (
     <Table>
       <TableCaption>A list of your recent invoices.</TableCaption>
@@ -23,8 +24,8 @@ const PoolTableComponent = ({ data }) => {
         </TableRow>
       </TableHeader>
       <TableBody>
-        {data.map((invoice) => (
-          <TableRow key={invoice.invoice} className="!border-b-0">
+        {data.map((data) => (
+          <TableRow key={data.token} className="!border-b-0">
             <TableCell className="font-medium flex items-center gap-2">
               <Avatar className="w-8 h-8">
                 <AvatarImage
@@ -33,15 +34,11 @@ const PoolTableComponent = ({ data }) => {
                 />
                 <AvatarFallback>CN</AvatarFallback>
               </Avatar>
-              {invoice.invoice}
+              {data.token}
             </TableCell>
-            <TableCell className="text-right">
-              {invoice.paymentStatus}
-            </TableCell>
-            <TableCell className="text-right">
-              {invoice.paymentMethod}
-            </TableCell>
-            <TableCell className="text-right">{invoice.totalAmount}</TableCell>
+            <TableCell className="text-right">{data.tvl}</TableCell>
+            <TableCell className="text-right">{data.volume}</TableCell>
+            <TableCell className="text-right">{data.apr}</TableCell>
           </TableRow>
         ))}
       </TableBody>

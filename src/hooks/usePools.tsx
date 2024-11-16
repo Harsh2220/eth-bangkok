@@ -35,7 +35,7 @@ export default function usePools() {
         args: [tokenAddress as `0x${string}`],
       });
     } catch (error) {
-      console.log(`Error fetching pool data: ${error}`);
+      console.error(`Error fetching pool data: ${error}`);
       return null;
     }
   };
@@ -60,9 +60,11 @@ export default function usePools() {
 
     await Promise.all(
       SUPPORTED_TOKENS.map(async (tokenSymbol) => {
+        // Get all valid pools for this token across chains
         const chainPools = await Promise.all(
           SUPPORTED_CHAINS.map(async (chain) => {
             const tokenAddress = getTokenContract(chain, tokenSymbol);
+            // Skip if no token contract exists for this chain (e.g., USDT on Base)
             if (!tokenAddress) return null;
 
             const publicClient = getPublicClient(chain);
@@ -73,6 +75,7 @@ export default function usePools() {
           })
         );
 
+        // Filter out null results (skipped chains) and find the best pool
         const validPools = chainPools.filter(
           (pool): pool is Pool => pool !== null
         );

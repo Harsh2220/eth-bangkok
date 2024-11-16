@@ -1,84 +1,49 @@
 "use client";
 
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-
 import PoolTableComponent from "@/components/pool-table";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import usePools from "@/hooks/usePools";
 import { useQuery } from "@tanstack/react-query";
 
-const invoices = [
+export type PoolData = {
+  token: string;
+  tvl: number;
+  volume: number;
+  apr: number;
+};
+
+const poolData: PoolData[] = [
   {
-    invoice: "INV001",
-    paymentStatus: "Paid",
-    totalAmount: "$250.00",
-    paymentMethod: "Credit Card",
+    token: "ETH",
+    tvl: 1000000,
+    volume: 50000,
+    apr: 5.5,
   },
   {
-    invoice: "INV002",
-    paymentStatus: "Pending",
-    totalAmount: "$150.00",
-    paymentMethod: "PayPal",
+    token: "USDT",
+    tvl: 2000000,
+    volume: 100000,
+    apr: 4.5,
   },
   {
-    invoice: "INV003",
-    paymentStatus: "Unpaid",
-    totalAmount: "$350.00",
-    paymentMethod: "Bank Transfer",
+    token: "DAI",
+    tvl: 1500000,
+    volume: 75000,
+    apr: 4.8,
   },
   {
-    invoice: "INV004",
-    paymentStatus: "Paid",
-    totalAmount: "$450.00",
-    paymentMethod: "Credit Card",
+    token: "USDC",
+    tvl: 1800000,
+    volume: 90000,
+    apr: 4.7,
   },
   {
-    invoice: "INV005",
-    paymentStatus: "Paid",
-    totalAmount: "$550.00",
-    paymentMethod: "PayPal",
-  },
-  {
-    invoice: "INV006",
-    paymentStatus: "Pending",
-    totalAmount: "$200.00",
-    paymentMethod: "Bank Transfer",
-  },
-  {
-    invoice: "INV007",
-    paymentStatus: "Unpaid",
-    totalAmount: "$300.00",
-    paymentMethod: "Credit Card",
+    token: "WBTC",
+    tvl: 2500000,
+    volume: 125000,
+    apr: 6.0,
   },
 ];
-
-export function SelectDemo() {
-  return (
-    <Select>
-      <SelectTrigger className="w-[180px] rounded-xl">
-        <SelectValue placeholder="Select token" />
-      </SelectTrigger>
-      <SelectContent>
-        <SelectGroup>
-          <SelectLabel>Fruits</SelectLabel>
-          <SelectItem value="apple">Apple</SelectItem>
-          <SelectItem value="banana">Banana</SelectItem>
-          <SelectItem value="blueberry">Blueberry</SelectItem>
-          <SelectItem value="grapes">Grapes</SelectItem>
-          <SelectItem value="pineapple">Pineapple</SelectItem>
-        </SelectGroup>
-      </SelectContent>
-    </Select>
-  );
-}
 
 export default function Pools() {
   const { getPools } = usePools();
@@ -100,7 +65,7 @@ export default function Pools() {
         {/* <CardDescription>Overview</CardDescription> */}
       </CardHeader>
       <CardContent className="flex-1 pb-0 pt-8">
-        <PoolTableComponent data={invoices} />
+        <PoolTableComponent data={poolData} />
       </CardContent>
     </Card>
     // <section className="min-h-[calc(100vh-56px)] flex justify-center items-center">
