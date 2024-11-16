@@ -78,13 +78,27 @@ const Home = () => {
           <h1 className="text-lg font-normal text-gray-600">Total Balance</h1>
           <div className="flex items-center gap-2">
             <div className="text-3xl font-bold">${amountData}</div>
-            <div className="text-lg text-green-500 font-semibold border border-green-500 border-opacity-40 border-5 rounded-full px-4 flex items-center gap-2">
-              <TrendingUp /> {pnlData?.data.roi}%
-              {/* change color of down icon */}
+            <div
+              className={`text-lg font-semibold border border-opacity-40 rounded-full px-4 flex items-center gap-2
+        ${
+          pnlData?.data.roi > 0
+            ? "text-green-500 border-green-500"
+            : "text-red-500 border-red-500"
+        }`}
+            >
+              {pnlData?.data.roi > 0 ? (
+                <TrendingUp color="green" />
+              ) : (
+                <TrendingDown color="red" />
+              )}
+              {pnlData?.data.roi}%{/* change color of down icon */}
               {/* <TrendingDown /> */}
             </div>
-            <div className="text-lg text-green-500 font-semibold">
-              + ${pnlData?.data.roi}
+            <div
+              className={`text-lg font-semibold
+    ${pnlData?.data.abs_profit_usd > 0 ? "text-green-500" : "text-red-500"}`}
+            >
+             $ {Number(pnlData?.data.abs_profit_usd).toFixed(2)} 
             </div>
           </div>
         </div>
