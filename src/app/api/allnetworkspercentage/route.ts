@@ -1,5 +1,20 @@
 import { NextRequest, NextResponse } from "next/server";
 
+interface ChainResult {
+  chain_id: number | null;
+  value_usd: number;
+}
+
+interface ProtocolData {
+  protocol_name: string;
+  result: ChainResult[];
+}
+
+interface NullChainData {
+  protocol_name: string;
+  value: number;
+}
+
 export async function GET(req: NextRequest) {
     const { searchParams } = new URL(req.url);
     const addresses = searchParams.get("addresses");
@@ -18,14 +33,20 @@ export async function GET(req: NextRequest) {
     const data = await response.json();
 
     console.log("data", data);
-    const nullChainData = data.result.map((protocol:any) => ({
-      protocol_name: protocol.protocol_name,
-      value:
-        protocol.result.find((item:any) => item.chain_id === null)?.value_usd || 0,
-    }));
+    const nullChainData: NullChainData[] = data.result.map(
+      (protocol: ProtocolData) => ({
+        protocol_name: protocol.protocol_name,
+        value:
+          protocol.result.find((item) => item.chain_id === null)?.value_usd ||
+          0,
+      })
+    );
 
     // Calculate total value
-    const totalValue = nullChainData.reduce((sum:any, item:any) => sum + item.value, 0);
+    const totalValue = nullChainData.reduce(
+      (sum: number, item: NullChainData) => sum + item.value,
+      0
+    );
 
     // Calculate percentages
     const protocolPercentages = nullChainData.map((item:any) => ({
@@ -36,7 +57,7 @@ export async function GET(req: NextRequest) {
 
     console.log(protocolPercentages);
 
-    return NextResponse.json({ data: protocolPercentages, status: 200 });
+    return NextResponse.json({ data: data, status: 200 });
   } catch (error) {
     return NextResponse.json({ data: error, status: 500 });
   }

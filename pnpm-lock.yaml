@@ -5,6 +5,12 @@ settings:
   excludeLinksFromLockfile: false
 
 dependencies:
+  '@aave/contract-helpers':
+    specifier: ^1.30.5
+    version: 1.30.5(bignumber.js@9.1.2)(ethers@6.13.4)(reflect-metadata@0.1.14)(tslib@2.8.1)
+  '@bgd-labs/aave-address-book':
+    specifier: ^4.3.1
+    version: 4.3.1
   '@radix-ui/react-avatar':
     specifier: ^1.1.1
     version: 1.1.1(@types/react-dom@18.3.1)(@types/react@18.3.12)(react-dom@19.0.0-rc-66855b96-20241106)(react@19.0.0-rc-66855b96-20241106)
@@ -41,6 +47,9 @@ dependencies:
   '@reown/appkit-core':
     specifier: ^1.4.1
     version: 1.4.1(@types/react@18.3.12)(react@19.0.0-rc-66855b96-20241106)(typescript@5.6.3)
+  '@tanstack/react-query':
+    specifier: ^5.60.5
+    version: 5.60.5(react@19.0.0-rc-66855b96-20241106)
   class-variance-authority:
     specifier: ^0.7.0
     version: 0.7.0
@@ -71,6 +80,9 @@ dependencies:
   tailwindcss-animate:
     specifier: ^1.0.7
     version: 1.0.7(tailwindcss@3.4.15)
+  viem:
+    specifier: 2.x
+    version: 2.21.45(typescript@5.6.3)(zod@3.22.4)
   wagmi:
     specifier: ^2.12.33
     version: 2.12.33(@tanstack/react-query@5.60.5)(@types/react@18.3.12)(react-dom@19.0.0-rc-66855b96-20241106)(react-native@0.76.2)(react@19.0.0-rc-66855b96-20241106)(typescript@5.6.3)(viem@2.21.45)
@@ -102,6 +114,23 @@ devDependencies:
     version: 5.6.3
 
 packages:
+
+  /@aave/contract-helpers@1.30.5(bignumber.js@9.1.2)(ethers@6.13.4)(reflect-metadata@0.1.14)(tslib@2.8.1):
+    resolution: {integrity: sha512-4CCLROduGD6HG3/DYAWS9KPDe30Pbo+b2LNKblLCy+Y90lE8aB5/e0RVZ47+vHheV9qOCjEjLYXEyeUYo7NvFg==}
+    peerDependencies:
+      bignumber.js: ^9.x
+      ethers: ^5.x
+      reflect-metadata: ^0.1.x
+      tslib: ^2.4.x
+    dependencies:
+      bignumber.js: 9.1.2
+      ethers: 6.13.4
+      isomorphic-unfetch: 3.1.0
+      reflect-metadata: 0.1.14
+      tslib: 2.8.1
+    transitivePeerDependencies:
+      - encoding
+    dev: false
 
   /@adraffy/ens-normalize@1.10.1:
     resolution: {integrity: sha512-96Z2IP3mYmF1Xg2cDm8f1gWGf/HUVedQ3FMifV4kG/PQ4yEP51xDtRAEfhVNt5f/uzpNkZHwWQuUcu6D6K+Ekw==}
@@ -1542,6 +1571,10 @@ packages:
     dependencies:
       '@babel/helper-string-parser': 7.25.9
       '@babel/helper-validator-identifier': 7.25.9
+    dev: false
+
+  /@bgd-labs/aave-address-book@4.3.1:
+    resolution: {integrity: sha512-Rg5ak/OuXgT6Q0q+CcP4GvutsTVaR6HmSsyHogkjwPgrgApg4d8GxtKHqBj9oXbNHnW5/N7piEGZc8Jd5z7G/Q==}
     dev: false
 
   /@coinbase/wallet-sdk@3.9.3:
@@ -7254,6 +7287,15 @@ packages:
     engines: {node: '>=0.10.0'}
     dev: false
 
+  /isomorphic-unfetch@3.1.0:
+    resolution: {integrity: sha512-geDJjpoZ8N0kWexiwkX8F9NkTsXhetLPVbZFQ+JTW239QNOwvB0gniuR1Wc6f0AMTn7/mFGyXvHTifrCp/GH8Q==}
+    dependencies:
+      node-fetch: 2.7.0
+      unfetch: 4.2.0
+    transitivePeerDependencies:
+      - encoding
+    dev: false
+
   /isows@1.0.6(ws@8.18.0):
     resolution: {integrity: sha512-lPHCayd40oW98/I0uvgaHKWCSvkzY27LjWLbtzOm64yQ+G3Q5npjjbdppU65iZXkK1Zt+kH9pfegli0AYfwYYw==}
     peerDependencies:
@@ -9054,6 +9096,10 @@ packages:
       victory-vendor: 36.9.2
     dev: false
 
+  /reflect-metadata@0.1.14:
+    resolution: {integrity: sha512-ZhYeb6nRaXCfhnndflDK8qI6ZQ/YcWZCISRAWICW9XYqMUwjZM9Z0DveWX/ABN01oxSHwVxKQmxeYZSsm0jh5A==}
+    dev: false
+
   /reflect.getprototypeof@1.0.6:
     resolution: {integrity: sha512-fmfw4XgoDke3kdI6h4xcUz1dG8uaiv5q9gcEwLS4Pnth2kxT+GZ7YehS1JTMGBQmtV7Y4GFGbs2re2NqhdozUg==}
     engines: {node: '>= 0.4'}
@@ -9973,6 +10019,10 @@ packages:
       mime: 3.0.0
       node-fetch-native: 1.6.4
       pathe: 1.1.2
+    dev: false
+
+  /unfetch@4.2.0:
+    resolution: {integrity: sha512-F9p7yYCn6cIW9El1zi0HI6vqpeIvBsr3dSuRO6Xuppb1u5rXpCPmMvLSyECLhybr9isec8Ohl0hPekMVrEinDA==}
     dev: false
 
   /unicode-canonical-property-names-ecmascript@2.0.1:

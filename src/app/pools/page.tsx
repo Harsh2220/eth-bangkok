@@ -1,132 +1,67 @@
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+"use client";
 
-const invoices = [
+import PoolTableComponent from "@/components/pool-table";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+
+export type PoolData = {
+  token: string;
+  tvl: number;
+  volume: number;
+  apr: number;
+};
+
+const poolData: PoolData[] = [
   {
-    invoice: "INV001",
-    paymentStatus: "Paid",
-    totalAmount: "$250.00",
-    paymentMethod: "Credit Card",
+    token: "ETH",
+    tvl: 1000000,
+    volume: 50000,
+    apr: 5.5,
   },
   {
-    invoice: "INV002",
-    paymentStatus: "Pending",
-    totalAmount: "$150.00",
-    paymentMethod: "PayPal",
+    token: "USDT",
+    tvl: 2000000,
+    volume: 100000,
+    apr: 4.5,
   },
   {
-    invoice: "INV003",
-    paymentStatus: "Unpaid",
-    totalAmount: "$350.00",
-    paymentMethod: "Bank Transfer",
+    token: "DAI",
+    tvl: 1500000,
+    volume: 75000,
+    apr: 4.8,
   },
   {
-    invoice: "INV004",
-    paymentStatus: "Paid",
-    totalAmount: "$450.00",
-    paymentMethod: "Credit Card",
+    token: "USDC",
+    tvl: 1800000,
+    volume: 90000,
+    apr: 4.7,
   },
   {
-    invoice: "INV005",
-    paymentStatus: "Paid",
-    totalAmount: "$550.00",
-    paymentMethod: "PayPal",
-  },
-  {
-    invoice: "INV006",
-    paymentStatus: "Pending",
-    totalAmount: "$200.00",
-    paymentMethod: "Bank Transfer",
-  },
-  {
-    invoice: "INV007",
-    paymentStatus: "Unpaid",
-    totalAmount: "$300.00",
-    paymentMethod: "Credit Card",
+    token: "WBTC",
+    tvl: 2500000,
+    volume: 125000,
+    apr: 6.0,
   },
 ];
 
-export function SelectDemo() {
-  return (
-    <Select>
-      <SelectTrigger className="w-[180px] rounded-xl">
-        <SelectValue placeholder="Select token" />
-      </SelectTrigger>
-      <SelectContent>
-        <SelectGroup>
-          <SelectLabel>Fruits</SelectLabel>
-          <SelectItem value="apple">Apple</SelectItem>
-          <SelectItem value="banana">Banana</SelectItem>
-          <SelectItem value="blueberry">Blueberry</SelectItem>
-          <SelectItem value="grapes">Grapes</SelectItem>
-          <SelectItem value="pineapple">Pineapple</SelectItem>
-        </SelectGroup>
-      </SelectContent>
-    </Select>
-  );
-}
-
 export default function Pools() {
   return (
-    <section className="min-h-[calc(100vh-56px)] flex justify-center items-center">
-      <div className="bg-secondary rounded-3xl">
-        <div className="p-4 flex justify-between items-center">
-          <h4 className="font-semibold">Lend</h4>
-          <SelectDemo />
-        </div>
-        <Table>
-          <TableHeader>
-            <TableRow className="!border-b-0">
-              <TableHead className="w-[200px]">Token</TableHead>
-              <TableHead className="text-right">TVL</TableHead>
-              <TableHead className="text-right">Volume</TableHead>
-              <TableHead className="text-right">APR</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {invoices.map((invoice) => (
-              <TableRow key={invoice.invoice} className="!border-b-0">
-                <TableCell className="font-medium flex items-center gap-2">
-                  <Avatar className="w-8 h-8">
-                    <AvatarImage
-                      src="https://github.com/shadcn.png"
-                      alt="@shadcn"
-                    />
-                    <AvatarFallback>CN</AvatarFallback>
-                  </Avatar>
-                  {invoice.invoice}
-                </TableCell>
-                <TableCell className="text-right">
-                  {invoice.paymentStatus}
-                </TableCell>
-                <TableCell className="text-right">
-                  {invoice.paymentMethod}
-                </TableCell>
-                <TableCell className="text-right">
-                  {invoice.totalAmount}
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </div>
-    </section>
+    <Card className="flex flex-col bg-transparent  w-[content]">
+      <CardHeader className="items-center pb-0">
+        <CardTitle className=" w-full">Pools </CardTitle>
+        {/* <CardDescription>Overview</CardDescription> */}
+      </CardHeader>
+      <CardContent className="flex-1 pb-0 pt-8">
+        <PoolTableComponent data={poolData} />
+      </CardContent>
+    </Card>
+    // <section className="min-h-[calc(100vh-56px)] flex justify-center items-center">
+    //   <div className="bg-secondary rounded-3xl">
+    //     <div className="p-4 flex justify-between items-center">
+    //       <h4 className="font-semibold">Lend</h4>
+    //       <SelectDemo />
+    //     </div>
+    //     <PoolTableComponent data={invoices} />
+    //   </div>
+    // </section>
   );
 }
