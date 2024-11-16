@@ -98,7 +98,7 @@ const Home = () => {
               className={`text-lg font-semibold
     ${pnlData?.data.abs_profit_usd > 0 ? "text-green-500" : "text-red-500"}`}
             >
-             $ {Number(pnlData?.data.abs_profit_usd).toFixed(2)} 
+              $ {Number(pnlData?.data.abs_profit_usd).toFixed(2)}
             </div>
           </div>
         </div>

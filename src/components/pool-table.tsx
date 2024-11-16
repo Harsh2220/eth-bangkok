@@ -1,44 +1,52 @@
-import React from "react";
 import {
   Table,
   TableBody,
-  TableCaption,
   TableCell,
   TableHead,
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { Pool } from "@/hooks/usePools";
 import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
-import { PoolData } from "@/app/pools/page";
+import { Button } from "./ui/button";
 
-const PoolTableComponent = ({ data }: { data: PoolData[] }) => {
+const PoolTableComponent = ({ data }: { data: Pool[] }) => {
   return (
     <Table>
-      <TableCaption>A list of your recent invoices.</TableCaption>
       <TableHeader>
         <TableRow className="!border-b-0">
           <TableHead className="w-[200px]">Token</TableHead>
-          <TableHead className="text-right">TVL</TableHead>
-          <TableHead className="text-right">Volume</TableHead>
+          <TableHead className="text-right">Chain</TableHead>
+          <TableHead className="text-right">APY</TableHead>
           <TableHead className="text-right">APR</TableHead>
+          <TableHead className="text-right">Action</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
         {data.map((data) => (
-          <TableRow key={data.token} className="!border-b-0">
+          <TableRow key={data.token.address} className="!border-b-0">
             <TableCell className="font-medium flex items-center gap-2">
               <Avatar className="w-8 h-8">
                 <AvatarImage
-                  src="https://github.com/shadcn.png"
+                  src={data.token.image}
                   alt="@shadcn"
+                  className="rounded-lg"
                 />
                 <AvatarFallback>CN</AvatarFallback>
               </Avatar>
-              {data.token}
+              {data.token.symbol}
             </TableCell>
-            <TableCell className="text-right">{data.tvl}</TableCell>
-            <TableCell className="text-right">{data.volume}</TableCell>
-            <TableCell className="text-right">{data.apr}</TableCell>
+            <TableCell className="text-right">{data.chain.name}</TableCell>
+            <TableCell className="text-right">
+              {data.supplyYield.toFixed(2)}%
+            </TableCell>
+            <TableCell className="text-right">
+              {data.borrowYield.toFixed(2)}%
+            </TableCell>
+            <TableCell className="text-right flex gap-2 justify-end">
+              <Button size={"sm"}>Lend</Button>
+              <Button size={"sm"}>Borrow</Button>
+            </TableCell>
           </TableRow>
         ))}
       </TableBody>

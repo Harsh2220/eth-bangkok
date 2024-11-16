@@ -3,11 +3,13 @@ import { ABI } from "@/constants/abi";
 import { AAVE_CONTRACT } from "@/constants/contracts";
 import getPublicClient from "@/utils/getPublicClient";
 import getTokenContract from "@/utils/getTokenContract";
+import getTokenImage from "@/utils/getTokenImage";
 import { formatUnits, Chain, PublicClient } from "viem";
 
 export interface Token {
   address: string;
   symbol: string;
+  image: string;
 }
 
 export interface Pool {
@@ -43,12 +45,14 @@ export default function usePools() {
   const createPoolObject = (
     tokenAddress: string,
     symbol: string,
+    image: string,
     chain: Chain,
     data: PoolData
   ): Pool => ({
     token: {
       address: tokenAddress,
       symbol,
+      image,
     },
     chain,
     supplyYield: Number(formatUnits(data.currentLiquidityRate, 27)),
@@ -71,7 +75,13 @@ export default function usePools() {
             const data = await fetchPoolData(publicClient, tokenAddress);
             if (!data) return null;
 
-            return createPoolObject(tokenAddress, tokenSymbol, chain, data);
+            return createPoolObject(
+              tokenAddress,
+              tokenSymbol,
+              getTokenImage(tokenSymbol),
+              chain,
+              data
+            );
           })
         );
 
