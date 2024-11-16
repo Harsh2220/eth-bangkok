@@ -13,7 +13,7 @@ const notoSans = Raleway({
 });
 
 export const metadata: Metadata = {
-  title: "Portfolio tracker",
+  title: "OceanPot",
   description: "Track your crypto portfolio",
 };
 

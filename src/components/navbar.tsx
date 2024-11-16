@@ -25,7 +25,7 @@ export function Navbar() {
 
         <div className="flex items-center gap-2 md:hidden">
           <img src="/logo.svg" alt="Logo" className="h-6 w-6" />
-          <span className="font-semibold">Portfolio Tracker</span>
+          <span className="font-semibold">OceanPot</span>
         </div>
 
         <div className="flex-1" />
