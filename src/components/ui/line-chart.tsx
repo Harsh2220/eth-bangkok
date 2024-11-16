@@ -37,7 +37,7 @@ const chartConfig = {
 
 export function LineChartComponent() {
   return (
-    <Card className="bg-transparent">
+    <Card className="bg-transparent w-full">
       <CardHeader>
         <CardTitle>Area Chart - Axes</CardTitle>
         <CardDescription className="flex gap-4">

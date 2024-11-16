@@ -83,16 +83,16 @@ const Home = () => {
         </div>
       </div>
       <div className="flex gap-4">
-        <div className="w-[content] ">
+        <div className="w-4/12">
           <PieChartComponent />
         </div>
-        <div className=" border-[0.5px] border-gray-800 ml-2 mr-2" />
-        <div className="">
+        <div className="border-[0.5px] border-gray-800 ml-2 mr-2" />
+        <div className="w-8/12">
           <LineChartComponent />
         </div>
       </div>
       <div>
-        <Card className="flex flex-col bg-transparent  w-[content]">
+        <Card className="flex flex-col bg-transparent w-[content]">
           <CardHeader className="items-center pb-0">
             <CardTitle className=" w-full">Tokens</CardTitle>
             {/* <CardDescription>Overview</CardDescription> */}

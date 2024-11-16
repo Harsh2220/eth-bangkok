@@ -2,6 +2,8 @@
 
 import PoolTableComponent from "@/components/pool-table";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import usePools from "@/hooks/usePools";
+import { useQuery } from "@tanstack/react-query";
 
 export type PoolData = {
   token: string;
@@ -44,6 +46,18 @@ const poolData: PoolData[] = [
 ];
 
 export default function Pools() {
+  const { getPools } = usePools();
+  const { data, isLoading } = useQuery({
+    queryKey: ["pools"],
+    queryFn: async () => {
+      const pools = await getPools();
+      console.log(pools, "asda");
+      return pools;
+    },
+  });
+
+  console.log(data, isLoading);
+
   return (
     <Card className="flex flex-col bg-transparent  w-[content]">
       <CardHeader className="items-center pb-0">
