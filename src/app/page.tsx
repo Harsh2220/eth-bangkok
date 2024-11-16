@@ -104,7 +104,7 @@ const Home = () => {
       </div>
       <div className="flex gap-4">
         <div className="w-4/12">
-          <PieChartComponent />
+          <PieChartComponent data={allnetworkspercentage?.data} />
         </div>
         <div className="border-[0.5px] border-gray-800 ml-2 mr-2" />
         <div className="w-8/12">
