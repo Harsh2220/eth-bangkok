@@ -1,3 +1,7 @@
+"use client";
+
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
 import {
   Select,
   SelectContent,
@@ -10,13 +14,23 @@ import {
 import {
   Table,
   TableBody,
-  TableCaption,
   TableCell,
   TableHead,
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { ABI } from "@/constants/abi";
+import { POLYGON_CONTRACT } from "@/constants/contracts";
+import { polygon } from "@reown/appkit/networks";
+import { useAppKitAccount } from "@reown/appkit/react";
+import { useEffect } from "react";
+import {
+  useChainId,
+  useReadContract,
+  useSwitchChain,
+  useWriteContract,
+} from "wagmi";
+import { formatUnits } from "viem";
 
 const invoices = [
   {
@@ -84,6 +98,43 @@ export function SelectDemo() {
 }
 
 export default function Pools() {
+  const { data, error, writeContractAsync } = useWriteContract();
+  const { address } = useAppKitAccount();
+  const chain = useChainId();
+  const { switchChainAsync } = useSwitchChain();
+  const { data: read, error: err } = useReadContract({
+    abi: ABI,
+    address: POLYGON_CONTRACT,
+    functionName: "getReserveData",
+    args: ["0xc2132D05D31c914a87C6611C10748AEb04B58e8F"],
+  });
+
+  async function handleCall() {
+    if (!address) return;
+    console.log(chain);
+    await switchChainAsync({
+      chainId: polygon.id,
+    });
+    await writeContractAsync({
+      abi: ABI,
+      address: POLYGON_CONTRACT,
+      functionName: "supply",
+      args: [
+        "0xc2132D05D31c914a87C6611C10748AEb04B58e8F",
+        BigInt(1000000),
+        address as `0x${string}`,
+        0,
+      ],
+    });
+    console.log(data, error);
+  }
+
+  useEffect(() => {
+    if (read) {
+      console.log(read, err, formatUnits(read?.currentLiquidityRate, 27));
+    }
+  }, [read]);
+
   return (
     <section className="min-h-[calc(100vh-56px)] flex justify-center items-center">
       <div className="bg-secondary rounded-3xl">
@@ -127,6 +178,7 @@ export default function Pools() {
           </TableBody>
         </Table>
       </div>
+      <Button onClick={handleCall}>Hello</Button>
     </section>
   );
 }
