@@ -1,3 +1,5 @@
+import TableComponent from "@/components/token-table";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { LineChartComponent } from "@/components/ui/line-chart";
 import { PieChartComponent } from "@/components/ui/pie-chart";
 import {
@@ -8,7 +10,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@radix-ui/react-dropdown-menu";
-import { PieChart, TrendingUp } from "lucide-react";
+import { TrendingUp } from "lucide-react";
 
 const page = async () => {
   // const fetchData = async () => {
@@ -71,6 +73,17 @@ const page = async () => {
         <div className="">
           <LineChartComponent />
         </div>
+      </div>
+      <div>
+        <Card className="flex flex-col bg-transparent  w-[content]">
+          <CardHeader className="items-center pb-0">
+            <CardTitle className=" w-full">Tokens</CardTitle>
+            {/* <CardDescription>Overview</CardDescription> */}
+          </CardHeader>
+          <CardContent className="flex-1 pb-0 pt-8">
+            <TableComponent />
+          </CardContent>
+        </Card>
       </div>
     </div>
   );

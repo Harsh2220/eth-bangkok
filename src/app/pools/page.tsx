@@ -7,16 +7,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+
+import PoolTableComponent from "@/components/pool-table";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 const invoices = [
   {
@@ -85,48 +78,23 @@ export function SelectDemo() {
 
 export default function Pools() {
   return (
-    <section className="min-h-[calc(100vh-56px)] flex justify-center items-center">
-      <div className="bg-secondary rounded-3xl">
-        <div className="p-4 flex justify-between items-center">
-          <h4 className="font-semibold">Lend</h4>
-          <SelectDemo />
-        </div>
-        <Table>
-          <TableHeader>
-            <TableRow className="!border-b-0">
-              <TableHead className="w-[200px]">Token</TableHead>
-              <TableHead className="text-right">TVL</TableHead>
-              <TableHead className="text-right">Volume</TableHead>
-              <TableHead className="text-right">APR</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {invoices.map((invoice) => (
-              <TableRow key={invoice.invoice} className="!border-b-0">
-                <TableCell className="font-medium flex items-center gap-2">
-                  <Avatar className="w-8 h-8">
-                    <AvatarImage
-                      src="https://github.com/shadcn.png"
-                      alt="@shadcn"
-                    />
-                    <AvatarFallback>CN</AvatarFallback>
-                  </Avatar>
-                  {invoice.invoice}
-                </TableCell>
-                <TableCell className="text-right">
-                  {invoice.paymentStatus}
-                </TableCell>
-                <TableCell className="text-right">
-                  {invoice.paymentMethod}
-                </TableCell>
-                <TableCell className="text-right">
-                  {invoice.totalAmount}
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </div>
-    </section>
+    <Card className="flex flex-col bg-transparent  w-[content]">
+      <CardHeader className="items-center pb-0">
+        <CardTitle className=" w-full">Pools </CardTitle>
+        {/* <CardDescription>Overview</CardDescription> */}
+      </CardHeader>
+      <CardContent className="flex-1 pb-0 pt-8">
+        <PoolTableComponent data={invoices} />
+      </CardContent>
+    </Card>
+    // <section className="min-h-[calc(100vh-56px)] flex justify-center items-center">
+    //   <div className="bg-secondary rounded-3xl">
+    //     <div className="p-4 flex justify-between items-center">
+    //       <h4 className="font-semibold">Lend</h4>
+    //       <SelectDemo />
+    //     </div>
+    //     <PoolTableComponent data={invoices} />
+    //   </div>
+    // </section>
   );
 }
