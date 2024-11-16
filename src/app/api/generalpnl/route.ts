@@ -18,7 +18,7 @@ export async function GET(req: NextRequest) {
 
     const data = await response.json();
 
-    const filteredData = data.result.filter(item => item.chain_id === null)[0]; // Get the first item directly
+    const filteredData = data.result.filter((item: any) => item.chain_id === null)[0]; // Get the first item directly
 
     // Only proceed if we found a matching item
     if (filteredData) {
