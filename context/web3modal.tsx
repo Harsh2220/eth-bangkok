@@ -14,7 +14,7 @@ const ethersAdapter = new EthersAdapter();
 
 // 3. Create a metadata object
 const metadata = {
-  name: "Portfolio tracker",
+  name: "OceanPot",
   description: "Track your crypto portfolio",
   url: "https://mywebsite.com", // origin must match your domain & subdomain
   icons: ["https://avatars.mywebsite.com/"],

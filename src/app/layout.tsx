@@ -5,6 +5,7 @@ import { AppKit } from "../../context/web3modal";
 import { MainSidebar } from "@/components/sidebar";
 import { Navbar } from "@/components/navbar";
 import { SidebarProvider } from "@/components/ui/sidebar";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 const notoSans = Raleway({
   weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
@@ -12,7 +13,7 @@ const notoSans = Raleway({
 });
 
 export const metadata: Metadata = {
-  title: "Portfolio tracker",
+  title: "OceanPot",
   description: "Track your crypto portfolio",
 };
 

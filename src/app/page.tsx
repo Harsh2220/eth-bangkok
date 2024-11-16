@@ -13,69 +13,63 @@ import {
   DropdownMenuTrigger,
 } from "@radix-ui/react-dropdown-menu";
 import { useAppKitAccount } from "@reown/appkit-core/react";
-import { useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+
 // import { useState } from "react";
-import { TrendingUp } from "lucide-react";
+import { TrendingDown, TrendingUp } from "lucide-react";
 
-const page = () => {
+const Home = () => {
   const { address } = useAppKitAccount();
-  const [value, setValue] = useState(0);
-  const [percent, setPercent] = useState(0);
-  const [pnl, setPnl] = useState(0);
 
-  // const [isLoading, setIsLoading] = useState(true);
-  // const [error, setError] = useState(null);
-  // useEffect(() => {
-  //   fetchData(address);
-  // }
-  // , []);
-
-  const fetchAmount = async () => {
-    try {
-      const BASE_URL = process.env.BASE_URL;
+  // Replace individual fetch functions with React Query hooks
+  const {
+    data: amountData,
+    isPending,
+    isError,
+  } = useQuery({
+    queryKey: ["amount", address],
+    queryFn: async () => {
       const response = await fetch(`/api/allnetworks?addresses=${address}`);
       const data = await response.json();
+      return data.data.result[0].value_usd.toFixed(5);
+    },
+    enabled: !!address,
+  });
 
-      // console.log("result", data);
+  console.log("ttt", amountData);
 
-      // const responsePercentage = await fetch(
-      //   "http://localhost:3000/api/allnetworkspercentage"
-      // );
-      // const resultPercentage = await responsePercentage.json();
-      // console.log("resultPercentage", resultPercentage);
+  const {
+    data: pnlData,
+    isPending: pnlPending,
+    isError: pnlError,
+  } = useQuery({
+    queryKey: ["pnl", address],
+    queryFn: async () => {
+      const response = await fetch(`/api/generalpnl?addresses=${address}`);
+      return response.json();
+    },
+    enabled: !!address,
+  });
 
-      // // Access the data from your response structure
-      // const data = result.data.result[0].value_usd;
+  console.log("xxx", pnlData);
 
-      // Now you can use the data
-      // console.log(data.data, "asdsad");
-      setValue(data.data.result[0].value_usd.toFixed(5));
-      fetchPNL();
-    } catch (error) {
-      console.log("Error fetching data:", error);
-      return null;
-    }
-  };
+  const {
+    data: allnetworkspercentage,
+    isPending: allnetworkspercentagePending,
+    isError: allnetworkspercentageError,
+  } = useQuery({
+    queryKey: ["percentage-split", address],
+    queryFn: async () => {
+      const response = await fetch(
+        `/api/allnetworkspercentage?addresses=${address}`
+      );
+      const data = await response.json();
+      return data;
+    },
+    enabled: !!address,
+  });
 
-  const fetchPNL = async () => {
-    try {
-      const responsePnl = await fetch(`/api/generalpnl?addresses=${address}`);
-      console.log("===> ", responsePnl);
-
-      const resultPercentage = await responsePnl.json();
-
-      console.log("resultPercentage", resultPercentage);
-    } catch (error) {
-      console.log("Error fetching data:", error);
-      return null;
-    }
-  };
-
-  useEffect(() => {
-    if (address) {
-      fetchAmount();
-    }
-  }, [address]);
+  console.log("allnetworkspercentage", allnetworkspercentage);
 
   return (
     <div className="min-h-screen px-6 flex flex-col gap-12">
@@ -83,11 +77,29 @@ const page = () => {
         <div>
           <h1 className="text-lg font-normal text-gray-600">Total Balance</h1>
           <div className="flex items-center gap-2">
-            <div className="text-3xl font-bold">${value}</div>
-            <div className="text-lg text-green-500 font-semibold border border-green-500 border-opacity-40 border-5 rounded-full px-4 flex items-center gap-2">
-              <TrendingUp /> 10%
+            <div className="text-3xl font-bold">${amountData}</div>
+            <div
+              className={`text-lg font-semibold border border-opacity-40 rounded-full px-4 flex items-center gap-2
+        ${
+          pnlData?.data.roi > 0
+            ? "text-green-500 border-green-500"
+            : "text-red-500 border-red-500"
+        }`}
+            >
+              {pnlData?.data.roi > 0 ? (
+                <TrendingUp color="green" />
+              ) : (
+                <TrendingDown color="red" />
+              )}
+              {pnlData?.data.roi}%{/* change color of down icon */}
+              {/* <TrendingDown /> */}
             </div>
-            <div className="text-lg text-green-500 font-semibold">+ $21</div>
+            <div
+              className={`text-lg font-semibold
+    ${pnlData?.data.abs_profit_usd > 0 ? "text-green-500" : "text-red-500"}`}
+            >
+             $ {Number(pnlData?.data.abs_profit_usd).toFixed(2)} 
+            </div>
           </div>
         </div>
         <div>
@@ -106,7 +118,7 @@ const page = () => {
       </div>
       <div className="flex gap-4">
         <div className="w-4/12">
-          <PieChartComponent />
+          <PieChartComponent data={allnetworkspercentage?.data} />
         </div>
         <div className="border-[0.5px] border-gray-800 ml-2 mr-2" />
         <div className="w-8/12">
@@ -128,4 +140,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Home;
