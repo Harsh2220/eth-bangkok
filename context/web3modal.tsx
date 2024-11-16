@@ -2,6 +2,11 @@
 
 import { createAppKit } from "@reown/appkit/react";
 import { EthersAdapter } from "@reown/appkit-adapter-ethers";
+import { WagmiProvider } from 'wagmi'
+import { config } from './config'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+
+
 import {
   mainnet,
   polygon,
@@ -39,7 +44,18 @@ createAppKit({
     socials: false,
   },
 });
+const queryClient = new QueryClient()
 
 export function AppKit({ children }: { children: React.ReactNode }) {
-  return <div className="min-h-screen bg-background">{children}</div>;
+  return (
+  <WagmiProvider config={config}>
+    <QueryClientProvider client={queryClient}>
+     <div className="min-h-screen bg-background">{children}</div>
+     </QueryClientProvider>
+  </WagmiProvider>)
 }
+
+
+// const signer = createWalletClient({
+//   transport: http('https://polygon-mainnet.g.alchemy.com/v2/JxWlGwJmN3m6cTpQ0JDktyI7pafFtMC7')
+// })

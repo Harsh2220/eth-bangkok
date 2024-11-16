@@ -7,7 +7,7 @@ import { MainSidebar } from "@/components/sidebar";
 
 export function Navbar() {
   return (
-    <nav className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+    <nav className="sticky top-2 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-14 items-center">
         <div className="md:hidden mr-2">
           <Sheet>
@@ -25,7 +25,7 @@ export function Navbar() {
 
         <div className="flex items-center gap-2 md:hidden">
           <img src="/logo.svg" alt="Logo" className="h-6 w-6" />
-          <span className="font-semibold">Portfolio Tracker</span>
+          <span className="font-semibold">OceanPot</span>
         </div>
 
         <div className="flex-1" />

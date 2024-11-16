@@ -17,8 +17,8 @@ export function MainSidebar({ className }: { className?: string }) {
     <Sidebar>
       <SidebarHeader className="border-b px-6 py-4">
         <Link href="/" className="flex items-center gap-2">
-          <img src="/logo.svg" alt="Logo" className="h-6 w-6" />
-          <span className="font-semibold">Portfolio Tracker</span>
+          <img src="/ocean.svg" alt="Logo" className="h-8 w-8 invert" />
+          <span className="font-semibold">OceanPot</span>
         </Link>
       </SidebarHeader>
     </Sidebar>
