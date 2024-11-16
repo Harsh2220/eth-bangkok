@@ -4,9 +4,11 @@ export async function GET(req : NextRequest) {
     const { searchParams } = new URL(req.url);
     const addresses = searchParams.get("addresses");
     const timerange = searchParams.get("timerange");
+    const chain_id = searchParams.get("chain_id");
+
   try {
     const url = new URL(
-      `https://api.1inch.dev/portfolio/portfolio/v4/overview/erc20/details?addresses=${addresses}&use_cache=true&timerange=${timerange}`
+      `https://api.1inch.dev/portfolio/portfolio/v4/overview/erc20/details?addresses=${addresses}&use_cache=true&timerange=${timerange}&chain_id=${chain_id}`
     );
 
     const response = await fetch(url, {
