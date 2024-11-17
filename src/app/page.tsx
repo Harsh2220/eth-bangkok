@@ -16,8 +16,8 @@ const Home = () => {
   // Replace individual fetch functions with React Query hooks
   const {
     data: amountData,
-    isPending,
-    isError,
+    // isPending,
+    // isError,
   } = useQuery({
     queryKey: ["amount", address],
     queryFn: async () => {
@@ -32,8 +32,8 @@ const Home = () => {
 
   const {
     data: pnlData,
-    isPending: pnlPending,
-    isError: pnlError,
+    // isPending: pnlPending,
+    // isError: pnlError,
   } = useQuery({
     queryKey: ["pnl", address],
     queryFn: async () => {
@@ -47,8 +47,8 @@ const Home = () => {
 
   const {
     data: allnetworkspercentage,
-    isPending: allnetworkspercentagePending,
-    isError: allnetworkspercentageError,
+    // isPending: allnetworkspercentagePending,
+    // isError: allnetworkspercentageError,
   } = useQuery({
     queryKey: ["percentage-split", address],
     queryFn: async () => {

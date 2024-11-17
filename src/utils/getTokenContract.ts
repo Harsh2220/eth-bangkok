@@ -1,8 +1,6 @@
 import { Chain } from "viem";
 import { arbitrum, base, optimism, polygon } from "viem/chains";
-import { AaveV3Base, AaveV3Arbitrum, AaveV3Optimism, AaveV3Polygon } from "@bgd-labs/aave-address-book"
 import { TOKENS } from "@/types";
-
 
 export default function getTokenContract(chain: Chain, token: TOKENS) {
     switch (chain) {

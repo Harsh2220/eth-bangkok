@@ -40,7 +40,6 @@ export function Navbar() {
             {klaster?.account.getAddress(1)?.slice(-2)}
           </Button>
         ) : (
-          //@ts-ignore
           <appkit-button />
         )}
       </div>

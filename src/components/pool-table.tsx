@@ -1,12 +1,4 @@
 import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import {
   Dialog,
   DialogContent,
   DialogDescription,
@@ -15,33 +7,40 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { ABI } from "@/constants/abi";
+import { AAVE_CONTRACT } from "@/constants/contracts";
+import useBridge from "@/hooks/useBridge";
+import useKlaster from "@/hooks/useKlaster";
 import { Pool } from "@/hooks/usePools";
+import { TOKENS } from "@/types";
+import getTokenContract from "@/utils/getTokenContract";
 import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
-import { Button } from "./ui/button";
-import { Label } from "./ui/label";
-import { Input } from "./ui/input";
 import {
   MultichainClient,
   MultichainTokenMapping,
   buildItx,
   buildMultichainReadonlyClient,
-  buildRpcInfo,
   buildTokenMapping,
   deployment,
   encodeBridgingOps,
   rawTx,
   singleTx,
 } from "klaster-sdk";
-import { Chain, arbitrum, base, optimism, polygon } from "viem/chains";
-import useKlaster from "@/hooks/useKlaster";
-import { createWalletClient, encodeFunctionData, http, parseUnits } from "viem";
-import useBridge from "@/hooks/useBridge";
-import getTokenContract from "@/utils/getTokenContract";
-import { TOKENS } from "@/types";
-import { AAVE_CONTRACT } from "@/constants/contracts";
-import { ABI } from "@/constants/abi";
 import { useState } from "react";
+import { createWalletClient, encodeFunctionData, http, parseUnits } from "viem";
+import { Chain, arbitrum, base, optimism, polygon } from "viem/chains";
 import { useAccount } from "wagmi";
+import { Button } from "./ui/button";
+import { Input } from "./ui/input";
+import { Label } from "./ui/label";
 
 const PoolTableComponent = ({ data }: { data: Pool[] }) => {
   const { klaster } = useKlaster();
@@ -103,6 +102,9 @@ const PoolTableComponent = ({ data }: { data: Pool[] }) => {
       });
 
       console.log(bridgingOps, "opasd");
+      const tokenAddress = getTokenContract(chain, TOKENS.USDC);
+
+      if (!tokenAddress) return;
 
       const supplyTx = rawTx({
         gasLimit: BigInt(100000),
@@ -110,12 +112,7 @@ const PoolTableComponent = ({ data }: { data: Pool[] }) => {
         data: encodeFunctionData({
           abi: ABI,
           functionName: "supply",
-          args: [
-            getTokenContract(chain, TOKENS.USDC),
-            BigInt(amount),
-            address,
-            0,
-          ],
+          args: [tokenAddress, BigInt(amount), address, 0],
         }),
       });
 
@@ -138,6 +135,8 @@ const PoolTableComponent = ({ data }: { data: Pool[] }) => {
       });
 
       const result = await klaster.execute(quote, signed);
+
+      return result;
     } catch (error) {
       console.log("ererer", error);
     }
@@ -197,6 +196,7 @@ const PoolTableComponent = ({ data }: { data: Pool[] }) => {
                         defaultValue="Pedro Duarte"
                         className="col-span-3"
                         type="number"
+                        onChange={(e) => setAmount(e.target.value)}
                       />
                     </div>
                   </div>
@@ -232,6 +232,7 @@ const PoolTableComponent = ({ data }: { data: Pool[] }) => {
                         defaultValue="Pedro Duarte"
                         className="col-span-3"
                         type="number"
+                        onChange={(e) => setAmount(e.target.value)}
                       />
                     </div>
                   </div>
