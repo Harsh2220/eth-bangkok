@@ -62,7 +62,7 @@ function SingleRow({ d }: { d: TokenData }) {
 const TableComponent = ({ data }: { data: TokenData[] }) => {
   return (
     <Table>
-      <TableCaption>A list of your recent invoices.</TableCaption>
+      <TableCaption>A list of your recent tokens.</TableCaption>
       <TableHeader>
         <TableRow>
           <TableHead className="w-[100px]">Token</TableHead>
