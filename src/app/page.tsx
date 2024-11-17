@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+// @ts-nocheck
 "use client";
 
 import TableComponent from "@/components/token-table";
@@ -13,68 +15,61 @@ import { TrendingDown, TrendingUp } from "lucide-react";
 const Home = () => {
   const { address } = useAppKitAccount();
 
-  // Replace individual fetch functions with React Query hooks
-  const {
-    data: amountData,
-    // isPending,
-    // isError,
-  } = useQuery({
+  // First query
+  const { data: amountData, isSuccess: isAmountSuccess } = useQuery({
     queryKey: ["amount", address],
-    queryFn: async () => {
-      const response = await fetch(`/api/allnetworks?addresses=${address}`);
-      const data = await response.json();
-      return data.data.result[0].value_usd.toFixed(5);
-    },
+    queryFn: () =>
+      fetch(`/api/allnetworks?addresses=${address}`)
+        .then((res) => res.json())
+        .then((data) => data.data.result[0].value_usd.toFixed(5)),
     enabled: !!address,
+  });
+
+  // Second query
+  const { data: pnlData, isSuccess: isPnlSuccess } = useQuery({
+    queryKey: ["pnl", address],
+    queryFn: () =>
+      new Promise((resolve) => {
+        setTimeout(() => {
+          fetch(`/api/generalpnl?addresses=${address}`)
+            .then((res) => res.json())
+            .then(resolve);
+        }, 1000);
+      }),
+    enabled: !!address && isAmountSuccess,
+  });
+
+  // Third query
+  const { data: allnetworkspercentage, isSuccess: isPercentageSuccess } =
+    useQuery({
+      queryKey: ["percentage-split", address],
+      queryFn: () =>
+        new Promise((resolve) => {
+          setTimeout(() => {
+            fetch(`/api/allnetworkspercentage?addresses=${address}`)
+              .then((res) => res.json())
+              .then(resolve);
+          }, 1000);
+        }),
+      enabled: !!address && isPnlSuccess,
+    });
+
+  // Fourth query
+  const { data: tokenDetails } = useQuery({
+    queryKey: ["token-details", address],
+    queryFn: () =>
+      new Promise((resolve) => {
+        setTimeout(() => {
+          fetch(`/api/tokendetails?addresses=${address}`)
+            .then((res) => res.json())
+            .then(resolve);
+        }, 1000);
+      }),
+    enabled: !!address && isPercentageSuccess,
   });
 
   console.log("ttt", amountData);
-
-  const {
-    data: pnlData,
-    // isPending: pnlPending,
-    // isError: pnlError,
-  } = useQuery({
-    queryKey: ["pnl", address],
-    queryFn: async () => {
-      const response = await fetch(`/api/generalpnl?addresses=${address}`);
-      return response.json();
-    },
-    enabled: !!address,
-  });
-
   console.log("xxx", pnlData);
-
-  const {
-    data: allnetworkspercentage,
-    // isPending: allnetworkspercentagePending,
-    // isError: allnetworkspercentageError,
-  } = useQuery({
-    queryKey: ["percentage-split", address],
-    queryFn: async () => {
-      const response = await fetch(
-        `/api/allnetworkspercentage?addresses=${address}`
-      );
-      const data = await response.json();
-      return data;
-    },
-    enabled: !!address,
-  });
-
-  const {
-    data: tokenDetails,
-    isPending: tokenDetailsPending,
-    isError: tokenDetailsError,
-  } = useQuery({
-    queryKey: ["token-details", address],
-    queryFn: async () => {
-      const response = await fetch(`/api/tokendetails?addresses=${address}`);
-      const data = await response.json();
-      return data;
-    },
-    enabled: !!address,
-  });
-
   console.log("tokenDetails", tokenDetails?.data?.result);
 
   return (

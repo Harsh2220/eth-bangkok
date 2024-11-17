@@ -9,7 +9,18 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
-const TableComponent = ({ data }) => {
+interface TokenData {
+  chain_id: number;
+  contract_address: string;
+  amount: number;
+  price_to_usd: number;
+  value_usd: number;
+  abs_profit_usd: number;
+  roi: number;
+  status: number;
+}
+
+const TableComponent = ({ data }: { data: TokenData[] }) => {
   return (
     <Table>
       <TableCaption>A list of your recent invoices.</TableCaption>
@@ -27,7 +38,7 @@ const TableComponent = ({ data }) => {
       </TableHeader>
       <TableBody>
         {data &&
-          data.map(async (d: any, i: number) => {
+          data.map((d, i: number) => {
             return (
               <TableRow key={i}>
                 <TableCell className="font-medium">
