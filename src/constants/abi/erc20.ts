@@ -51,4 +51,4 @@ export const ERC20Abi = [
     stateMutability: "view",
     type: "function",
   },
-];
+] as const;
