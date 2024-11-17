@@ -4,12 +4,14 @@ import { MainSidebar } from "@/components/sidebar";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import useKlaster from "@/hooks/useKlaster";
+import { useAppKit, useAppKitAccount } from "@reown/appkit/react";
 import { Menu } from "lucide-react";
 import { useAccount } from "wagmi";
 
 export function Navbar() {
-  const { isConnected } = useAccount();
+  const { isConnected } = useAppKitAccount();
   const { klaster } = useKlaster();
+  const { open } = useAppKit();
 
   return (
     <nav className="sticky top-0 z-50 w-full px-6 py-4 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -35,7 +37,13 @@ export function Navbar() {
 
         <div className="flex-1" />
         {isConnected && klaster ? (
-          <Button variant={"outline"} size={"sm"}>
+          <Button
+            variant={"outline"}
+            size={"sm"}
+            onClick={() => {
+              open();
+            }}
+          >
             {klaster?.account.getAddress(1)?.slice(0, 4)}...
             {klaster?.account.getAddress(1)?.slice(-2)}
           </Button>
