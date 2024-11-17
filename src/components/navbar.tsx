@@ -6,7 +6,6 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import useKlaster from "@/hooks/useKlaster";
 import { useAppKit, useAppKitAccount } from "@reown/appkit/react";
 import { Menu } from "lucide-react";
-import { useAccount } from "wagmi";
 
 export function Navbar() {
   const { isConnected } = useAppKitAccount();
