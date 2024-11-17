@@ -1,4 +1,4 @@
-#OceanPot - Your Passport to Seamless Cross-Chain Trading
+# OceanPot - Your Passport to Seamless Cross-Chain Trading
 
 <p align="center">
     <img src="/2.png" width="100" height="100" style="display: block; margin: 0 auto">
@@ -6,9 +6,9 @@
 
 A cross-chain DeFi platform that automatically optimizes yield farming across multiple blockchains while simplifying portfolio management. Our chain abstraction layer enables one-click deposits, smart yield optimization, and real-time portfolio tracking across networks.
 
-##OceanPot: One-stop solution to all your needs.
+## OceanPot: One-stop solution to all your needs.
 
-##Features:
+## Features:
 - **Portfolio Tracking:** Tracks all your assets across different blockchains.
 - **Enhanced User Experience (UX)**: Intuitive design prioritized for seamless navigation.
 - **Chain Abstraction:** Supports Chain Abstraction using Klaster
