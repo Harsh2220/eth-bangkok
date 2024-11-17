@@ -9,7 +9,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
-const TableComponent = () => {
+const TableComponent = ({ data }) => {
   return (
     <Table>
       <TableCaption>A list of your recent invoices.</TableCaption>
@@ -26,25 +26,38 @@ const TableComponent = () => {
         </TableRow>
       </TableHeader>
       <TableBody>
-        <TableRow>
-          <TableCell className="font-medium">Pepe</TableCell>
-          <TableCell>Token</TableCell>
-          <TableCell className="text-right">92110185</TableCell>
-          <TableCell className="text-right">$0.005</TableCell>
-          <TableCell className="text-right">$1933.00</TableCell>
-          <TableCell className="text-right text-green-500">$1857.00</TableCell>
-          <TableCell className="text-right text-green-500">1741%</TableCell>
-        </TableRow>
-
-        <TableRow>
-          <TableCell className="font-medium">Pepe</TableCell>
-          <TableCell>Token</TableCell>
-          <TableCell className="text-right">92110185</TableCell>
-          <TableCell className="text-right">$0.005</TableCell>
-          <TableCell className="text-right">$1933.00</TableCell>
-          <TableCell className="text-right text-green-500">$1857.00</TableCell>
-          <TableCell className="text-right text-green-500">1741%</TableCell>
-        </TableRow>
+        {data &&
+          data.map(async (d: any, i: number) => {
+            return (
+              <TableRow key={i}>
+                <TableCell className="font-medium">
+                  {d.contract_address}
+                </TableCell>
+                <TableCell>{d.chain_id}</TableCell>
+                <TableCell className="text-right">
+                  {d.amount.toFixed(2)}
+                </TableCell>
+                <TableCell className="text-right">{d.price_to_usd}</TableCell>
+                <TableCell className="text-right">
+                  ${d.value_usd.toFixed(2)}
+                </TableCell>
+                <TableCell
+                  className={`text-right ${
+                    d.abs_profit_usd > 0 ? "text-green-500" : "text-red-500"
+                  }`}
+                >
+                  ${d.abs_profit_usd.toFixed(2)}
+                </TableCell>
+                <TableCell
+                  className={`text-right ${
+                    d.roi > 0 ? "text-green-500" : "text-red-500"
+                  }`}
+                >
+                  {d.roi.toFixed(2)}%
+                </TableCell>
+              </TableRow>
+            );
+          })}
       </TableBody>
     </Table>
   );

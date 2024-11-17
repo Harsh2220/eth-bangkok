@@ -69,7 +69,21 @@ const Home = () => {
     enabled: !!address,
   });
 
-  console.log("allnetworkspercentage", allnetworkspercentage);
+  const {
+    data: tokenDetails,
+    isPending: tokenDetailsPending,
+    isError: tokenDetailsError,
+  } = useQuery({
+    queryKey: ["token-details", address],
+    queryFn: async () => {
+      const response = await fetch(`/api/tokendetails?addresses=${address}`);
+      const data = await response.json();
+      return data;
+    },
+    enabled: !!address,
+  });
+
+  console.log("tokenDetails", tokenDetails?.data?.result);
 
   return (
     <div className="min-h-screen px-6 flex flex-col gap-12">
@@ -91,14 +105,13 @@ const Home = () => {
               ) : (
                 <TrendingDown color="red" />
               )}
-              {pnlData?.data.roi}%{/* change color of down icon */}
-              {/* <TrendingDown /> */}
+              {pnlData?.data.roi}%
             </div>
             <div
               className={`text-lg font-semibold
     ${pnlData?.data.abs_profit_usd > 0 ? "text-green-500" : "text-red-500"}`}
             >
-             $ {Number(pnlData?.data.abs_profit_usd).toFixed(2)} 
+              $ {Number(pnlData?.data.abs_profit_usd).toFixed(2)}
             </div>
           </div>
         </div>
@@ -132,7 +145,7 @@ const Home = () => {
             {/* <CardDescription>Overview</CardDescription> */}
           </CardHeader>
           <CardContent className="flex-1 pb-0 pt-8">
-            <TableComponent />
+            <TableComponent data={tokenDetails?.data.result} />
           </CardContent>
         </Card>
       </div>

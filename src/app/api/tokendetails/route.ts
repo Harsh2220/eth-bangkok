@@ -1,16 +1,26 @@
 import { NextRequest, NextResponse } from "next/server";
 
-export async function GET(req : NextRequest) {
-    const { searchParams } = new URL(req.url);
-    const addresses = searchParams.get("addresses");
-    const timerange = searchParams.get("timerange");
-    const chain_id = searchParams.get("chain_id");
+export async function GET(req: NextRequest) {
+  const { searchParams } = new URL(req.url);
+  const addresses = searchParams.get("addresses");
+  const timerange = searchParams.get("timerange");
+  const chain_id = searchParams.get("chain_id");
 
   try {
     const url = new URL(
-      `https://api.1inch.dev/portfolio/portfolio/v4/overview/erc20/details?addresses=${addresses}&use_cache=true&timerange=${timerange}&chain_id=${chain_id}`
+      `https://api.1inch.dev/portfolio/portfolio/v4/overview/erc20/details?addresses=${addresses}`
     );
 
+    if (chain_id) {
+      url.searchParams.append("chain_id", chain_id);
+    }
+    if (timerange) {
+      url.searchParams.append("timerange", timerange);
+    } else {
+      url.searchParams.append("timerange", "1year");
+    }
+
+    console.log("urll", url);
     const response = await fetch(url, {
       headers: {
         Authorization: `Bearer ${process.env.INCH_API_KEY}`,
