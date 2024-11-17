@@ -14,10 +14,10 @@ import {
 export function PieChartComponent({ data }: { data: unknown }) {
   const chartData = React.useMemo(() => {
     if (Array.isArray(data)) {
-      return data.map((item) => ({
+      return data.map((item, index) => ({
         protocolname: item.protocol_name,
         usdvalue: item.value_usd,
-        fill: `var(--chart-${item.protocol_name})`,
+        fill: `hsl(var(--chart-${index + 1}))`,
       }));
     } else {
       return [];
