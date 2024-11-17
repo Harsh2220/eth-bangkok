@@ -1,7 +1,7 @@
 "use client";
 
 import { EthersAdapter } from "@reown/appkit-adapter-ethers";
-import { arbitrum, base, optimism, polygon } from "@reown/appkit/networks";
+import { arbitrum, base, optimism, polygon } from "viem/chains";
 import { createAppKit } from "@reown/appkit/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { WagmiProvider, createConfig, http } from "wagmi";
@@ -14,7 +14,7 @@ const ethersAdapter = new EthersAdapter();
 
 // 3. Create a metadata object
 const metadata = {
-  name: "Portfolio tracker",
+  name: "OceanPot",
   description: "Track your crypto portfolio",
   url: "https://mywebsite.com", // origin must match your domain & subdomain
   icons: ["https://avatars.mywebsite.com/"],
@@ -30,7 +30,13 @@ export const config = createConfig({
   },
 });
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+    },
+  },
+});
 
 // 4. Create the AppKit instance
 createAppKit({

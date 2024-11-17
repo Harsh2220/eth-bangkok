@@ -18,10 +18,10 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart";
 
-export function PieChartComponent({ data }) {
+export function PieChartComponent({ data }: { data: unknown }) {
   const chartData = React.useMemo(() => {
     if (Array.isArray(data)) {
-      return data.map((item, index) => ({
+      return data.map((item) => ({
         protocolname: item.protocol_name,
         usdvalue: item.value_usd,
         fill: `var(--chart-${item.protocol_name})`,
@@ -35,8 +35,8 @@ export function PieChartComponent({ data }) {
 
   const chartConfig = React.useMemo(() => {
     return {
-      ...chartData.reduce((acc, item, index) => {
-        acc[item.protocolname] = {
+      ...chartData.reduce<Omit<ChartConfig, "usdvalue">>((acc, item, index) => {
+        acc[item?.protocolname] = {
           label: item.protocolname,
           color: `hsl(var(--chart-${index + 1}))`,
         };

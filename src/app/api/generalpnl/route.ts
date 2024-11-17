@@ -1,8 +1,8 @@
 import { NextResponse, NextRequest } from "next/server";
 
 export async function GET(req: NextRequest) {
-    const { searchParams } = new URL(req.url);
-    const addresses = searchParams.get("addresses");
+  const { searchParams } = new URL(req.url);
+  const addresses = searchParams.get("addresses");
 
   try {
     const url = new URL(
@@ -18,21 +18,21 @@ export async function GET(req: NextRequest) {
 
     const data = await response.json();
 
-    const filteredData = data.result.filter((item: any) => item.chain_id === null)[0]; // Get the first item directly
+    const filteredData = data.result.filter((item: { chain_id: null | number }) => item.chain_id === null)[0]; // Get the first item directly
 
     // Only proceed if we found a matching item
     if (filteredData) {
-        const extractedData = {
-            abs_profit_usd: Number(filteredData.abs_profit_usd.toFixed(2)),
-            roi: Number(filteredData.roi.toFixed(4))
-        };
+      const extractedData = {
+        abs_profit_usd: Number(filteredData.abs_profit_usd.toFixed(2)),
+        roi: Number(filteredData.roi.toFixed(4))
+      };
 
-        console.log('extractedData', extractedData);
+      console.log('extractedData', extractedData);
 
-    return NextResponse.json({ 
-        data: extractedData, 
-        status: 200 
-    });
+      return NextResponse.json({
+        data: extractedData,
+        status: 200
+      });
 
     }
   } catch (error) {
