@@ -201,7 +201,7 @@ const PoolTableComponent = ({ data }: { data: Pool[] }) => {
                     </div>
                   </div>
                   <DialogFooter>
-                    <Button type="submit">Save changes</Button>
+                    <Button type="submit">Submit</Button>
                   </DialogFooter>
                 </DialogContent>
               </Dialog>
@@ -237,7 +237,7 @@ const PoolTableComponent = ({ data }: { data: Pool[] }) => {
                     </div>
                   </div>
                   <DialogFooter>
-                    <Button type="submit">Save changes</Button>
+                    <Button type="submit">Submit</Button>
                   </DialogFooter>
                 </DialogContent>
               </Dialog>
