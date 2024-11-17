@@ -10,8 +10,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import getPublicClient from "@/utils/getPublicClient";
-import { useReadContract, useToken } from "wagmi";
+import { useReadContract } from "wagmi";
 import { ERC20Abi } from "@/constants/abi/erc20";
 
 interface TokenData {
