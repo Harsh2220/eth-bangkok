@@ -25,18 +25,23 @@ interface TokenData {
 }
 
 function SingleRow({ d }: { d: TokenData }) {
-  const { data } = useReadContract({
+  const {
+    data: symbol,
+    isError,
+    isLoading,
+  } = useReadContract({
     abi: ERC20Abi,
     address: d.contract_address as `0x${string}`,
     functionName: "symbol",
   });
-
-  console.log(data);
+  const displaySymbol = isLoading
+    ? "Loading..."
+    : isError
+    ? d.contract_address.slice(0, 6) + "..." + d.contract_address.slice(-4)
+    : symbol;
   return (
     <TableRow>
-      <TableCell className="font-medium">
-        {data || d.contract_address}
-      </TableCell>
+      <TableCell className="font-medium">{displaySymbol}</TableCell>
       <TableCell>{d.chain_id}</TableCell>
       <TableCell className="text-right">{d.amount.toFixed(2)}</TableCell>
       <TableCell className="text-right">{d.price_to_usd}</TableCell>
