@@ -3,7 +3,6 @@ import { NextResponse } from "next/server";
 export async function GET() {
   //   const { searchParams } = new URL(req.url);
   //   const addresses = searchParams.get("addresses");
-  console.log("first");
   try {
     const url = new URL(
       "https://api.1inch.dev/portfolio/portfolio/v4/overview/protocols/details?addresses=0x111423FA917A010A4f62c9B2742708744B4CbFc4&use_cache=true"

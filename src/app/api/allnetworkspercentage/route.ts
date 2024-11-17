@@ -32,7 +32,6 @@ export async function GET(req: NextRequest) {
 
     const data = await response.json();
 
-    console.log("data", data);
     const nullChainData: NullChainData[] = data.result.map(
       (protocol: ProtocolData) => ({
         protocol_name: protocol.protocol_name,

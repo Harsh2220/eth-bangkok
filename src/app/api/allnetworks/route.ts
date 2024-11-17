@@ -1,9 +1,8 @@
 import { NextResponse, NextRequest } from "next/server";
 
 export async function GET(req: NextRequest) {
-    const { searchParams } = new URL(req.url);
-    const addresses = searchParams.get("addresses");
-  console.log("first");
+  const { searchParams } = new URL(req.url);
+  const addresses = searchParams.get("addresses");
   try {
     const url = new URL(
       `https://api.1inch.dev/portfolio/portfolio/v4/general/current_value?addresses=${addresses}&use_cache=true`

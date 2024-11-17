@@ -54,6 +54,19 @@ const Home = () => {
       enabled: !!address && isPnlSuccess,
     });
 
+  const { data: chartData, isSuccess: isChartSuccess } = useQuery({
+    queryKey: ["chart", address],
+    queryFn: () =>
+      new Promise((resolve) => {
+        setTimeout(() => {
+          fetch(`/api/chart?addresses=${address}`)
+            .then((res) => res.json())
+            .then(resolve);
+        }, 1000);
+      }),
+    enabled: !!address && isPercentageSuccess,
+  });
+
   // Fourth query
   const { data: tokenDetails } = useQuery({
     queryKey: ["token-details", address],
@@ -65,12 +78,10 @@ const Home = () => {
             .then(resolve);
         }, 1000);
       }),
-    enabled: !!address && isPercentageSuccess,
+    enabled: !!address && isChartSuccess,
   });
 
-  console.log("ttt", amountData);
-  console.log("xxx", pnlData);
-  console.log("tokenDetails", tokenDetails?.data?.result);
+  console.log("chartData", chartData);
 
   return (
     <div className="min-h-screen px-6 flex flex-col gap-12">
@@ -109,7 +120,7 @@ const Home = () => {
         </div>
         <div className="border-[0.5px] border-gray-800 ml-2 mr-2" />
         <div className="w-8/12">
-          <LineChartComponent />
+          <LineChartComponent data={chartData?.data?.result} />
         </div>
       </div>
       <div>

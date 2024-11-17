@@ -20,7 +20,6 @@ export async function GET(req: NextRequest) {
       url.searchParams.append("timerange", "1year");
     }
 
-    console.log("urll", url);
     const response = await fetch(url, {
       headers: {
         Authorization: `Bearer ${process.env.INCH_API_KEY}`,

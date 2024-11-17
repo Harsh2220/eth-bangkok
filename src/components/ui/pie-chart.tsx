@@ -24,8 +24,6 @@ export function PieChartComponent({ data }: { data: unknown }) {
     }
   }, [data]);
 
-  console.log("chartData", chartData);
-
   const chartConfig = React.useMemo(() => {
     return {
       ...chartData.reduce<Omit<ChartConfig, "usdvalue">>((acc, item, index) => {
@@ -40,42 +38,6 @@ export function PieChartComponent({ data }: { data: unknown }) {
       },
     } satisfies ChartConfig;
   }, [chartData]);
-
-  console.log("chartConfig", chartConfig);
-
-  // const chartData = [
-  //   { protocolname: "chrome", usdvalue: 275, fill: "var(--color-chrome)" },
-  //   { protocolname: "safari", usdvalue: 200, fill: "var(--color-safari)" },
-  //   { protocolname: "firefox", usdvalue: 287, fill: "var(--color-firefox)" },
-  //   { protocolname: "edge", usdvalue: 173, fill: "var(--color-edge)" },
-  //   { protocolname: "other", usdvalue: 190, fill: "var(--color-other)" },
-  // ];
-
-  // const chartConfig = {
-  //   usdvalue: {
-  //     label: "Visitors",
-  //   },
-  //   chrome: {
-  //     label: "Chrome",
-  //     color: "hsl(var(--chart-1))",
-  //   },
-  //   safari: {
-  //     label: "Safari",
-  //     color: "hsl(var(--chart-2))",
-  //   },
-  //   firefox: {
-  //     label: "Firefox",
-  //     color: "hsl(var(--chart-3))",
-  //   },
-  //   edge: {
-  //     label: "Edge",
-  //     color: "hsl(var(--chart-4))",
-  //   },
-  //   other: {
-  //     label: "Other",
-  //     color: "hsl(var(--chart-5))",
-  //   },
-  // } satisfies ChartConfig;
 
   const totalVisitors = React.useMemo(() => {
     return chartData.reduce((acc, curr) => acc + curr.usdvalue, 0);
