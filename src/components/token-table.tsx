@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import {
   Table,
@@ -8,6 +10,9 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import getPublicClient from "@/utils/getPublicClient";
+import { useReadContract, useToken } from "wagmi";
+import { ERC20Abi } from "@/constants/abi/erc20";
 
 interface TokenData {
   chain_id: number;
@@ -18,6 +23,41 @@ interface TokenData {
   abs_profit_usd: number;
   roi: number;
   status: number;
+}
+
+function SingleRow({ d }: { d: TokenData }) {
+  const { data } = useReadContract({
+    abi: ERC20Abi,
+    address: d.contract_address as `0x${string}`,
+    functionName: "symbol",
+  });
+
+  console.log(data);
+  return (
+    <TableRow>
+      <TableCell className="font-medium">
+        {data || d.contract_address}
+      </TableCell>
+      <TableCell>{d.chain_id}</TableCell>
+      <TableCell className="text-right">{d.amount.toFixed(2)}</TableCell>
+      <TableCell className="text-right">{d.price_to_usd}</TableCell>
+      <TableCell className="text-right">${d.value_usd.toFixed(2)}</TableCell>
+      <TableCell
+        className={`text-right ${
+          d.abs_profit_usd > 0 ? "text-green-500" : "text-red-500"
+        }`}
+      >
+        ${d.abs_profit_usd.toFixed(2)}
+      </TableCell>
+      <TableCell
+        className={`text-right ${
+          d.roi > 0 ? "text-green-500" : "text-red-500"
+        }`}
+      >
+        {d.roi.toFixed(2)}%
+      </TableCell>
+    </TableRow>
+  );
 }
 
 const TableComponent = ({ data }: { data: TokenData[] }) => {
@@ -37,38 +77,7 @@ const TableComponent = ({ data }: { data: TokenData[] }) => {
         </TableRow>
       </TableHeader>
       <TableBody>
-        {data &&
-          data.map((d, i: number) => {
-            return (
-              <TableRow key={i}>
-                <TableCell className="font-medium">
-                  {d.contract_address}
-                </TableCell>
-                <TableCell>{d.chain_id}</TableCell>
-                <TableCell className="text-right">
-                  {d.amount.toFixed(2)}
-                </TableCell>
-                <TableCell className="text-right">{d.price_to_usd}</TableCell>
-                <TableCell className="text-right">
-                  ${d.value_usd.toFixed(2)}
-                </TableCell>
-                <TableCell
-                  className={`text-right ${
-                    d.abs_profit_usd > 0 ? "text-green-500" : "text-red-500"
-                  }`}
-                >
-                  ${d.abs_profit_usd.toFixed(2)}
-                </TableCell>
-                <TableCell
-                  className={`text-right ${
-                    d.roi > 0 ? "text-green-500" : "text-red-500"
-                  }`}
-                >
-                  {d.roi.toFixed(2)}%
-                </TableCell>
-              </TableRow>
-            );
-          })}
+        {data && data.map((d, i: number) => <SingleRow d={d} key={i} />)}
       </TableBody>
     </Table>
   );
