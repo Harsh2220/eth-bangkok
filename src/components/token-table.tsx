@@ -8,8 +8,20 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { useReadContract } from "wagmi";
+import {ERC20Abi} from "@/constants/abi/erc20";
 
 const TableComponent = ({ data }) => {
+
+ const result =  useReadContract({
+    address: data.contract_address,
+    functionName: "symbol",
+    abi: ERC20Abi,
+  });
+
+  console.log("RES ", result);
+  
+
   return (
     <Table>
       <TableCaption>A list of your recent invoices.</TableCaption>
