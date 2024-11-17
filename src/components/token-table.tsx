@@ -27,7 +27,7 @@ const TableComponent = ({ data }: { data: TokenData[] }) => {
       <TableHeader>
         <TableRow>
           <TableHead className="w-[100px]">Token</TableHead>
-          <TableHead>Type</TableHead>
+          <TableHead>Chain id</TableHead>
           <TableHead className="text-right">Balance</TableHead>
           <TableHead className="text-right">Price</TableHead>
           <TableHead className="text-right">Value</TableHead>
